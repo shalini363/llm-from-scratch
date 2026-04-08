@@ -1,4 +1,4 @@
-# LLMs from Scratch — Visual Study Guide
+# LLMs from Scratch - Visual Study Guide
 
 A visual, interactive study guide covering Large Language Models (LLMs) 
 from the ground up. Built from handwritten notes while learning transformer 
@@ -9,7 +9,7 @@ architecture and NLP fundamentals.
 
 ## What's Covered
 
-- **NLP & Language Models** — what an LM is, Bayes' theorem, P(next_token | previous_tokens)
+- **NLP & Language Models** - what an LM is, Bayes' theorem, P(next_token | previous_tokens)
 - **Types of LMs** — Stats era → Neural era → Transformers
 - **Tokenization** — how text becomes token IDs the model can process
 - **Embeddings** — static vs contextual, word vector space
