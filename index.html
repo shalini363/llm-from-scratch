@@ -1,0 +1,713 @@
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0d1117;
+    --surface: #161b22;
+    --surface2: #1c2128;
+    --border: rgba(255,255,255,0.08);
+    --text: #e6edf3;
+    --muted: #8b949e;
+    --accent: #58a6ff;
+    --accent2: #f78166;
+    --accent3: #56d364;
+    --accent4: #e3b341;
+    --purple: #bc8cff;
+    --teal: #39c5cf;
+  }
+
+  body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; }
+
+  .guide { max-width: 900px; margin: 0 auto; padding: 32px 20px 60px; }
+
+  .hero { text-align: center; padding: 48px 24px 40px; margin-bottom: 48px; position: relative; }
+  .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 0%, rgba(88,166,255,0.12) 0%, transparent 70%); pointer-events: none; border-radius: 16px; }
+  .hero-tag { display: inline-block; background: rgba(88,166,255,0.12); border: 1px solid rgba(88,166,255,0.3); color: var(--accent); font-size: 11px; letter-spacing: 2px; text-transform: uppercase; padding: 5px 14px; border-radius: 20px; margin-bottom: 20px; font-weight: 500; }
+  .hero h1 { font-family: 'DM Serif Display', serif; font-size: clamp(28px,5vw,48px); font-weight: 400; line-height: 1.1; letter-spacing: -0.5px; margin-bottom: 16px; }
+  .hero h1 span { color: var(--accent); }
+  .hero p { color: var(--muted); font-size: 15px; max-width: 520px; margin: 0 auto; line-height: 1.6; }
+
+  .toc { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin-bottom: 56px; }
+  .toc-item { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; cursor: pointer; transition: all .2s; display: flex; align-items: center; gap: 10px; }
+  .toc-item:hover { background: var(--surface2); border-color: rgba(255,255,255,0.15); transform: translateY(-1px); }
+  .toc-num { font-family: 'DM Serif Display', serif; font-size: 22px; color: var(--accent); line-height: 1; min-width: 28px; }
+  .toc-label { font-size: 13px; color: var(--text); font-weight: 500; }
+  .toc-sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+  .section { margin-bottom: 56px; }
+  .section-header { display: flex; align-items: center; gap: 14px; margin-bottom: 28px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
+  .section-num { width: 40px; height: 40px; border-radius: 10px; background: rgba(88,166,255,0.1); border: 1px solid rgba(88,166,255,0.3); display: flex; align-items: center; justify-content: center; font-family: 'DM Serif Display', serif; font-size: 20px; color: var(--accent); flex-shrink: 0; }
+  .section-num.g2 { background: rgba(247,129,102,0.1); border-color: rgba(247,129,102,0.3); color: var(--accent2); }
+  .section-num.g3 { background: rgba(86,211,100,0.1); border-color: rgba(86,211,100,0.3); color: var(--accent3); }
+  .section-num.g4 { background: rgba(227,179,65,0.1); border-color: rgba(227,179,65,0.3); color: var(--accent4); }
+  .section-num.g5 { background: rgba(188,140,255,0.1); border-color: rgba(188,140,255,0.3); color: var(--purple); }
+  .section-num.g6 { background: rgba(57,197,207,0.1); border-color: rgba(57,197,207,0.3); color: var(--teal); }
+  .section-title { font-family: 'DM Serif Display', serif; font-size: 24px; font-weight: 400; }
+  .section-desc { font-size: 13px; color: var(--muted); margin-top: 2px; }
+
+  .def-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px 24px; margin-bottom: 16px; }
+  .def-card h3 { font-size: 14px; font-weight: 600; color: var(--accent); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .def-card p { font-size: 14px; color: var(--text); line-height: 1.7; }
+  .def-card .highlight { background: rgba(88,166,255,0.08); border-left: 3px solid var(--accent); border-radius: 0 8px 8px 0; padding: 10px 14px; margin-top: 12px; font-size: 13px; color: var(--muted); }
+  .def-card .formula { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 12px 16px; margin-top: 12px; font-family: monospace; font-size: 15px; color: var(--accent4); text-align: center; }
+
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 16px; }
+  @media(max-width:600px) { .grid2 { grid-template-columns: 1fr; } }
+
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 18px 20px; }
+  .card h4 { font-size: 13px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; }
+  .card p, .card li { font-size: 14px; color: var(--text); line-height: 1.65; }
+  .card ul { padding-left: 18px; }
+  .card li { margin-bottom: 4px; }
+
+  .timeline { display: flex; gap: 0; margin-bottom: 20px; position: relative; }
+  .timeline::before { content: ''; position: absolute; top: 24px; left: 0; right: 0; height: 2px; background: var(--border); z-index: 0; }
+  .tl-item { flex: 1; text-align: center; position: relative; z-index: 1; }
+  .tl-dot { width: 48px; height: 48px; border-radius: 12px; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600; }
+  .tl-dot.stats { background: rgba(227,179,65,0.1); border: 2px solid var(--accent4); color: var(--accent4); }
+  .tl-dot.neural { background: rgba(88,166,255,0.1); border: 2px solid var(--accent); color: var(--accent); }
+  .tl-dot.trans { background: rgba(188,140,255,0.1); border: 2px solid var(--purple); color: var(--purple); }
+  .tl-label { font-size: 12px; font-weight: 600; color: var(--text); }
+  .tl-sub { font-size: 11px; color: var(--muted); margin-top: 3px; }
+
+  .llm-types { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 16px; }
+  .type-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px; text-align: center; }
+  .type-card .icon { font-size: 24px; margin-bottom: 8px; }
+  .type-card h4 { font-size: 13px; font-weight: 600; margin-bottom: 6px; }
+  .type-card p { font-size: 12px; color: var(--muted); line-height: 1.5; }
+  .type-card .eg { margin-top: 8px; display: inline-block; background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; padding: 3px 10px; font-size: 11px; color: var(--accent); }
+  @media(max-width:500px) { .llm-types { grid-template-columns: 1fr; } }
+
+  .tok-visual { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-bottom: 16px; }
+  .tok-visual h4 { font-size: 13px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 16px; }
+  .tok-row { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; align-items: center; }
+  .tok { background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; padding: 6px 12px; font-size: 14px; font-weight: 500; position: relative; }
+  .tok-id { position: absolute; top: -10px; left: 50%; transform: translateX(-50%); font-size: 10px; color: var(--muted); background: var(--bg); padding: 0 4px; white-space: nowrap; }
+  .tok.t1 { border-color: rgba(88,166,255,0.5); color: var(--accent); }
+  .tok.t2 { border-color: rgba(247,129,102,0.5); color: var(--accent2); }
+  .tok.t3 { border-color: rgba(86,211,100,0.5); color: var(--accent3); }
+  .tok.t4 { border-color: rgba(227,179,65,0.5); color: var(--accent4); }
+  .tok.t5 { border-color: rgba(188,140,255,0.5); color: var(--purple); }
+  .tok.t6 { border-color: rgba(57,197,207,0.5); color: var(--teal); }
+  .arrow-right { font-size: 18px; color: var(--muted); }
+
+  .embed-visual { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-bottom: 16px; }
+  .embed-canvas { position: relative; height: 200px; background: var(--surface2); border-radius: 8px; overflow: hidden; margin-top: 12px; }
+  .embed-dot { position: absolute; width: 10px; height: 10px; border-radius: 50%; transform: translate(-50%, -50%); }
+  .embed-label { position: absolute; font-size: 11px; font-weight: 500; white-space: nowrap; }
+  .embed-cluster { position: absolute; border: 1px dashed; border-radius: 50%; opacity: 0.3; }
+
+  .attn-visual { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-bottom: 16px; }
+  .attn-visual h4 { font-size: 13px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 16px; }
+  .attn-tokens { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-bottom: 20px; }
+  .attn-tok { padding: 8px 14px; border-radius: 8px; font-size: 14px; font-weight: 500; border: 1.5px solid; cursor: pointer; transition: all .2s; }
+  .attn-tok.active { background: rgba(227,179,65,0.15); border-color: var(--accent4); color: var(--accent4); }
+  .attn-tok.high { opacity: 1; background: rgba(88,166,255,0.15); border-color: rgba(88,166,255,0.6); color: var(--accent); }
+  .attn-tok.med { opacity: 0.75; background: rgba(88,166,255,0.08); border-color: rgba(88,166,255,0.3); color: var(--muted); }
+  .attn-tok.low { opacity: 0.4; background: rgba(88,166,255,0.04); border-color: rgba(88,166,255,0.15); color: var(--muted); }
+  .attn-hint { font-size: 12px; color: var(--muted); text-align: center; margin-top: 4px; }
+  .weight-bars { display: flex; gap: 10px; margin-top: 12px; align-items: flex-end; height: 60px; }
+  .w-bar-wrap { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .w-bar { width: 100%; border-radius: 4px 4px 0 0; transition: height .3s ease; }
+  .w-bar-label { font-size: 11px; color: var(--muted); }
+
+  .arch-flow { display: flex; align-items: center; gap: 0; overflow-x: auto; padding: 16px 0; }
+  .arch-step { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 12px 16px; min-width: 120px; text-align: center; flex-shrink: 0; }
+  .arch-step h5 { font-size: 12px; font-weight: 600; margin-bottom: 4px; }
+  .arch-step p { font-size: 11px; color: var(--muted); }
+  .arch-step.s1 { border-color: rgba(57,197,207,0.4); }
+  .arch-step.s2 { border-color: rgba(88,166,255,0.4); }
+  .arch-step.s3 { border-color: rgba(188,140,255,0.4); }
+  .arch-step.s4 { border-color: rgba(227,179,65,0.4); }
+  .arch-step.s5 { border-color: rgba(86,211,100,0.4); }
+  .arch-arrow { font-size: 18px; color: var(--muted); padding: 0 6px; flex-shrink: 0; }
+
+  .qkv-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 16px; }
+  .qkv-card { border-radius: 12px; padding: 16px; border: 1px solid; }
+  .qkv-card.q { background: rgba(227,179,65,0.06); border-color: rgba(227,179,65,0.3); }
+  .qkv-card.k { background: rgba(88,166,255,0.06); border-color: rgba(88,166,255,0.3); }
+  .qkv-card.v { background: rgba(86,211,100,0.06); border-color: rgba(86,211,100,0.3); }
+  .qkv-letter { font-family: 'DM Serif Display', serif; font-size: 36px; line-height: 1; margin-bottom: 8px; }
+  .qkv-card.q .qkv-letter { color: var(--accent4); }
+  .qkv-card.k .qkv-letter { color: var(--accent); }
+  .qkv-card.v .qkv-letter { color: var(--accent3); }
+  .qkv-card h5 { font-size: 12px; font-weight: 600; margin-bottom: 6px; }
+  .qkv-card p { font-size: 12px; color: var(--muted); line-height: 1.55; }
+  @media(max-width:500px){ .qkv-grid { grid-template-columns: 1fr; } }
+
+  .pipeline { position: relative; padding: 24px 0; }
+  .pipe-step { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 8px; position: relative; }
+  .pipe-step:not(:last-child)::before { content:''; position:absolute; left:19px; top:44px; width:2px; height:calc(100% - 8px); background: var(--border); }
+  .pipe-num { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 600; flex-shrink: 0; position: relative; z-index: 1; }
+  .pipe-content { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 14px 18px; flex: 1; }
+  .pipe-content h5 { font-size: 14px; font-weight: 600; margin-bottom: 6px; }
+  .pipe-content p { font-size: 13px; color: var(--muted); line-height: 1.6; }
+  .pipe-content .eg { margin-top: 8px; font-size: 12px; background: var(--surface2); border-radius: 6px; padding: 8px 12px; color: var(--muted); }
+  .pipe-content .eg strong { color: var(--text); }
+
+  .enc-dec { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px; }
+  .enc-card { border-radius: 12px; padding: 18px; border: 1px solid; }
+  .enc-card.enc { background: rgba(88,166,255,0.05); border-color: rgba(88,166,255,0.3); }
+  .enc-card.dec { background: rgba(188,140,255,0.05); border-color: rgba(188,140,255,0.3); }
+  .enc-card h4 { font-size: 14px; font-weight: 600; margin-bottom: 10px; }
+  .enc-card.enc h4 { color: var(--accent); }
+  .enc-card.dec h4 { color: var(--purple); }
+  .enc-card ul { padding-left: 16px; }
+  .enc-card li { font-size: 13px; color: var(--muted); line-height: 1.7; }
+  @media(max-width:500px){ .enc-dec { grid-template-columns: 1fr; } }
+
+  .tag { display: inline-block; padding: 3px 10px; border-radius: 6px; font-size: 11px; font-weight: 600; margin: 2px; }
+  .tag.blue { background: rgba(88,166,255,0.1); color: var(--accent); border: 1px solid rgba(88,166,255,0.3); }
+  .tag.orange { background: rgba(247,129,102,0.1); color: var(--accent2); border: 1px solid rgba(247,129,102,0.3); }
+  .tag.green { background: rgba(86,211,100,0.1); color: var(--accent3); border: 1px solid rgba(86,211,100,0.3); }
+  .tag.yellow { background: rgba(227,179,65,0.1); color: var(--accent4); border: 1px solid rgba(227,179,65,0.3); }
+  .tag.purple { background: rgba(188,140,255,0.1); color: var(--purple); border: 1px solid rgba(188,140,255,0.3); }
+
+  .cheatsheet { background: var(--surface); border: 1px solid rgba(88,166,255,0.3); border-radius: 14px; padding: 24px; margin-top: 40px; }
+  .cheatsheet h3 { font-family: 'DM Serif Display', serif; font-size: 20px; margin-bottom: 20px; color: var(--accent); }
+  .cs-row { display: flex; gap: 12px; margin-bottom: 8px; align-items: baseline; }
+  .cs-term { font-size: 13px; font-weight: 600; color: var(--text); min-width: 170px; flex-shrink: 0; }
+  .cs-def { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+  .divider { height: 1px; background: var(--border); margin: 48px 0; }
+
+  .footer { text-align: center; padding: 32px 0 0; }
+  .footer p { font-size: 13px; color: var(--muted); }
+  .footer .hashtags { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+</style>
+
+<div class="guide">
+
+  <div class="hero">
+    <div class="hero-tag">Study Notes</div>
+    <h1>Understanding <span>LLMs</span><br>from the Ground Up</h1>
+    <p>NLP → Language Models → Transformers → Attention → Self-supervised Learning. A complete visual reference.</p>
+  </div>
+
+  <div class="toc">
+    <div class="toc-item"><div class="toc-num">1</div><div><div class="toc-label">NLP & Language Models</div><div class="toc-sub">What is an LM?</div></div></div>
+    <div class="toc-item"><div class="toc-num">2</div><div><div class="toc-label">Types of LMs & LLMs</div><div class="toc-sub">Stats → Neural → Transformers</div></div></div>
+    <div class="toc-item"><div class="toc-num">3</div><div><div class="toc-label">Tokenization</div><div class="toc-sub">Text → Tokens → IDs</div></div></div>
+    <div class="toc-item"><div class="toc-num">4</div><div><div class="toc-label">Embeddings</div><div class="toc-sub">Static vs Contextual</div></div></div>
+    <div class="toc-item"><div class="toc-num">5</div><div><div class="toc-label">Transformer Pipeline</div><div class="toc-sub">End-to-end flow</div></div></div>
+    <div class="toc-item"><div class="toc-num">6</div><div><div class="toc-label">Self-Attention (Q/K/V)</div><div class="toc-sub">How context is built</div></div></div>
+    <div class="toc-item"><div class="toc-num">7</div><div><div class="toc-label">Masking & Softmax</div><div class="toc-sub">Relevancy scores</div></div></div>
+    <div class="toc-item"><div class="toc-num">8</div><div><div class="toc-label">LM Head & Output</div><div class="toc-sub">Predicting next token</div></div></div>
+    <div class="toc-item"><div class="toc-num">9</div><div><div class="toc-label">Encoder vs Decoder</div><div class="toc-sub">BERT, GPT, T5</div></div></div>
+  </div>
+
+  <!-- SECTION 1 -->
+  <div class="section" id="s1">
+    <div class="section-header">
+      <div class="section-num">1</div>
+      <div><div class="section-title">NLP & Language Models</div><div class="section-desc">The foundation everything is built on</div></div>
+    </div>
+
+    <div class="def-card">
+      <h3>Natural Language Processing (NLP)</h3>
+      <p>A field of AI focused on developing technologies capable of <strong>understanding</strong>, <strong>interpreting</strong>, and <strong>generating</strong> human language.</p>
+    </div>
+
+    <div class="def-card">
+      <h3>Language Model (LM)</h3>
+      <p>Not a specific model — it's a <strong>concept / architecture</strong>. A Language Model is any compute program that <strong>learns to predict the next word (or token) in a sequence</strong>, based on what came before.</p>
+      <div class="highlight">💡 Real-world example: Email autocomplete — when Gmail suggests "I hope this email finds you well…" it's using a language model.</div>
+      <div class="formula">P(next_token | previous_tokens) ← Core Objective (Bayes' Theorem)</div>
+      <div class="highlight" style="margin-top:10px; border-left-color: var(--accent2);">🎯 Goal: Find the probability of the next token given all previous tokens.</div>
+    </div>
+  </div>
+
+  <!-- SECTION 2 -->
+  <div class="section" id="s2">
+    <div class="section-header">
+      <div class="section-num g2">2</div>
+      <div><div class="section-title">Types of Language Models & LLMs</div><div class="section-desc">Evolution from stats to modern transformers</div></div>
+    </div>
+
+    <div style="background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:20px; margin-bottom:16px;">
+      <h4 style="font-size:13px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:20px;">Evolution Timeline</h4>
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-dot stats">①</div>
+          <div class="tl-label">Stats Era</div>
+          <div class="tl-sub">N-grams<br>Markov Chains</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot neural">②</div>
+          <div class="tl-label">Neural Era</div>
+          <div class="tl-sub">RNN, LSTM<br>Word2Vec</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot trans">③</div>
+          <div class="tl-label">Transformers</div>
+          <div class="tl-sub">Encoder-Decoder<br>Decoder-Only (LLM)</div>
+        </div>
+      </div>
+      <p style="font-size:13px;color:var(--muted);margin-top:8px;">Word2Vec (Neural Era) was based on the <em>meaning of each word</em>. Transformers understand words <em>in context</em>.</p>
+    </div>
+
+    <div class="def-card">
+      <h3>Large Language Model (LLM)</h3>
+      <p>An LLM is a <strong>transformer-based language model trained at massive scale</strong>. The core idea is still "predict the next token" — but the scale and architecture make all the difference.</p>
+      <div class="highlight">LLM is one type/technique to <em>build</em> a language model. It's the currently dominant technique.</div>
+    </div>
+
+    <div class="llm-types">
+      <div class="type-card">
+        <div class="icon">↔️</div>
+        <h4 style="color:var(--accent)">Encoder–Decoder</h4>
+        <p>Understands input AND generates output</p>
+        <span class="eg">T5 — Translation</span>
+      </div>
+      <div class="type-card">
+        <div class="icon">🔍</div>
+        <h4 style="color:var(--accent2)">Encoder Only</h4>
+        <p>Deep understanding of text, no generation</p>
+        <span class="eg">BERT</span>
+      </div>
+      <div class="type-card">
+        <div class="icon">✍️</div>
+        <h4 style="color:var(--purple)">Decoder Only</h4>
+        <p>Generates text token-by-token</p>
+        <span class="eg">GPT series</span>
+      </div>
+    </div>
+    <p style="font-size:12px;color:var(--muted);margin-top:10px;">GPT = <strong>G</strong>enerative <strong>P</strong>re-trained <strong>T</strong>ransformer. BERT = <strong>B</strong>i-directional <strong>E</strong>ncoder <strong>R</strong>epresentations from <strong>T</strong>ransformers.</p>
+  </div>
+
+  <!-- SECTION 3 -->
+  <div class="section" id="s3">
+    <div class="section-header">
+      <div class="section-num g3">3</div>
+      <div><div class="section-title">Tokenization & Token IDs</div><div class="section-desc">How text becomes numbers the model can process</div></div>
+    </div>
+
+    <div class="def-card">
+      <h3>Tokenization</h3>
+      <p>The process of breaking down text into smaller units called <strong>tokens</strong>. Tokens can be words, subwords, characters, or even sentences — depending on the level of granularity required.</p>
+    </div>
+
+    <div class="tok-visual">
+      <h4>Example: "The white cat sat on the mat"</h4>
+      <div style="margin-bottom:16px;">
+        <div style="font-size:12px;color:var(--muted);margin-bottom:8px;">Step 1 — Tokenize into tokens</div>
+        <div class="tok-row">
+          <span class="tok t1">The</span>
+          <span class="tok t2">white</span>
+          <span class="tok t3">cat</span>
+          <span class="tok t4">sat</span>
+          <span class="tok t5">on</span>
+          <span class="tok t6">the</span>
+          <span class="tok t1">mat</span>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:12px;color:var(--muted);margin-bottom:8px;">Step 2 — Assign Token IDs (numbers the model understands)</div>
+        <div class="tok-row" style="align-items:center; margin-top:16px;">
+          <div style="text-align:center;margin-bottom:4px;">
+            <div class="tok-row" style="margin-bottom:4px;">
+              <span class="tok t1" style="position:relative;padding-top:18px;"><span class="tok-id">ID: 464</span>The</span>
+              <span class="tok t2" style="position:relative;padding-top:18px;"><span class="tok-id">ID: 2330</span>white</span>
+              <span class="tok t3" style="position:relative;padding-top:18px;"><span class="tok-id">ID: 3797</span>cat</span>
+              <span class="tok t4" style="position:relative;padding-top:18px;"><span class="tok-id">ID: 7281</span>sat</span>
+              <span class="tok t5" style="position:relative;padding-top:18px;"><span class="tok-id">ID: 319</span>on</span>
+              <span class="tok t6" style="position:relative;padding-top:18px;"><span class="tok-id">ID: 262</span>the</span>
+              <span class="tok t1" style="position:relative;padding-top:18px;"><span class="tok-id">ID: 2603</span>mat</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid2">
+      <div class="card">
+        <h4>Tokenizer</h4>
+        <p>A tool or algorithm that <strong>performs tokenization</strong>. Every language model has its <strong>own tokenizer</strong> specifically designed to work with that model.</p>
+      </div>
+      <div class="card">
+        <h4>Why model-specific tokenizers?</h4>
+        <p>Different models use different vocabularies and splitting strategies. When using different models, you <strong>must use their respective tokenizers</strong> to ensure compatibility.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 4 -->
+  <div class="section" id="s4">
+    <div class="section-header">
+      <div class="section-num g4">4</div>
+      <div><div class="section-title">Embeddings</div><div class="section-desc">Giving words meaning in vector space</div></div>
+    </div>
+
+    <div class="def-card">
+      <h3>Embeddings</h3>
+      <p>Vector representations of words that attempt to <strong>capture their meaning</strong>. Vectors are values with direction.</p>
+    </div>
+
+    <div class="embed-visual">
+      <h4 style="font-size:13px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;">Word relationships in vector space</h4>
+      <div class="embed-canvas">
+        <!-- King cluster -->
+        <div class="embed-cluster" style="width:120px;height:80px;top:20px;left:60px;border-color:var(--accent);"></div>
+        <div class="embed-dot" style="background:var(--accent);top:50px;left:100px;"></div>
+        <div class="embed-label" style="color:var(--accent);top:36px;left:107px;">King</div>
+        <div class="embed-dot" style="background:var(--accent);top:65px;left:140px;"></div>
+        <div class="embed-label" style="color:var(--accent);top:52px;left:147px;">Queen</div>
+        <div class="embed-label" style="color:var(--muted);top:90px;left:65px;font-size:10px;">Royalty cluster</div>
+
+        <!-- Animal cluster -->
+        <div class="embed-cluster" style="width:130px;height:90px;top:80px;left:250px;border-color:var(--accent3);"></div>
+        <div class="embed-dot" style="background:var(--accent3);top:100px;left:290px;"></div>
+        <div class="embed-label" style="color:var(--accent3);top:86px;left:297px;">Cat</div>
+        <div class="embed-dot" style="background:var(--accent3);top:130px;left:340px;"></div>
+        <div class="embed-label" style="color:var(--accent3);top:117px;left:347px;">Dog</div>
+        <div class="embed-label" style="color:var(--muted);top:162px;left:255px;font-size:10px;">Animals cluster</div>
+
+        <!-- Tech cluster -->
+        <div class="embed-cluster" style="width:100px;height:70px;top:30px;left:440px;border-color:var(--purple);"></div>
+        <div class="embed-dot" style="background:var(--purple);top:50px;left:475px;"></div>
+        <div class="embed-label" style="color:var(--purple);top:36px;left:482px;">Python</div>
+        <div class="embed-dot" style="background:var(--purple);top:75px;left:510px;"></div>
+        <div class="embed-label" style="color:var(--purple);top:62px;left:517px;">Java</div>
+        <div class="embed-label" style="color:var(--muted);top:96px;left:445px;font-size:10px;">Tech cluster</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:10px;">Similar meanings → nearby vectors. "Cat" and "Dog" are close. "Cat" and "King" are far apart.</p>
+    </div>
+
+    <div class="grid2">
+      <div class="card" style="border-color:rgba(88,166,255,0.3)">
+        <h4 style="color:var(--accent)">① Static Embeddings</h4>
+        <p>Same and constant for all processing. The word "bank" always has the <em>same</em> vector regardless of context.</p>
+        <div style="margin-top:10px;font-size:12px;color:var(--muted);">e.g. Word2Vec, GloVe</div>
+      </div>
+      <div class="card" style="border-color:rgba(188,140,255,0.3)">
+        <h4 style="color:var(--purple)">② Contextual Embeddings</h4>
+        <p>Changes based on sentence and context. "Bank" near "river" ≠ "bank" near "money".</p>
+        <div style="margin-top:10px;font-size:12px;color:var(--muted);">Created by Transformers (BERT, GPT)</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 5 -->
+  <div class="section" id="s5">
+    <div class="section-header">
+      <div class="section-num g5">5</div>
+      <div><div class="section-title">The Transformer Pipeline</div><div class="section-desc">End-to-end: text in → next token predicted</div></div>
+    </div>
+
+    <div style="background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:20px; margin-bottom:20px; overflow-x:auto;">
+      <div class="arch-flow">
+        <div class="arch-step s1"><h5 style="color:var(--teal)">Input</h5><p>Raw text</p></div>
+        <div class="arch-arrow">→</div>
+        <div class="arch-step s2"><h5 style="color:var(--accent)">Tokenizer</h5><p>Text → Token IDs</p></div>
+        <div class="arch-arrow">→</div>
+        <div class="arch-step s3"><h5 style="color:var(--purple)">Static Embedding</h5><p>ID → Vector</p></div>
+        <div class="arch-arrow">→</div>
+        <div class="arch-step s3"><h5 style="color:var(--purple)">Pos. Encoding</h5><p>Add position info</p></div>
+        <div class="arch-arrow">→</div>
+        <div class="arch-step s4"><h5 style="color:var(--accent4)">Transformer Blocks</h5><p>Self-attention × N</p></div>
+        <div class="arch-arrow">→</div>
+        <div class="arch-step s5"><h5 style="color:var(--accent3)">LM Head</h5><p>Predict next token</p></div>
+      </div>
+    </div>
+
+    <div class="pipeline">
+      <div class="pipe-step">
+        <div class="pipe-num" style="background:rgba(57,197,207,0.12);border:2px solid var(--teal);color:var(--teal)">1</div>
+        <div class="pipe-content">
+          <h5>Tokenizer — Convert input into tokens, assign Token IDs</h5>
+          <p>Splits text and maps to integer IDs from the model's vocabulary.</p>
+          <div class="eg">"The white cat sat on the" → <strong>[464, 2330, 3797, 7281, 319, 262]</strong></div>
+        </div>
+      </div>
+      <div class="pipe-step">
+        <div class="pipe-num" style="background:rgba(88,166,255,0.12);border:2px solid var(--accent);color:var(--accent)">2</div>
+        <div class="pipe-content">
+          <h5>Static Embedding — Assign a static vector to each token</h5>
+          <p>Each token ID maps to a fixed vector from the embedding table (learned during training).</p>
+          <div class="eg">Token ID 3797 ("cat") → <strong>[3, 5, 0, 1, ...]</strong> (static, same every time)</div>
+        </div>
+      </div>
+      <div class="pipe-step">
+        <div class="pipe-num" style="background:rgba(188,140,255,0.12);border:2px solid var(--purple);color:var(--purple)">3</div>
+        <div class="pipe-content">
+          <h5>Positional Encoding — Position of each token in the sequence</h5>
+          <p>Transformers process all tokens in parallel — positional encoding tells the model <em>where</em> each token appears.</p>
+          <div class="eg">"cat" at position 3 gets a different encoding than "cat" at position 7.</div>
+        </div>
+      </div>
+      <div class="pipe-step">
+        <div class="pipe-num" style="background:rgba(227,179,65,0.12);border:2px solid var(--accent4);color:var(--accent4)">4</div>
+        <div class="pipe-content">
+          <h5>Contextual Embedding — Self-attention in Transformer blocks</h5>
+          <p>This is the magic: each token's vector gets updated based on all other tokens. The vector for "cat" now reflects that it's a <em>white cat sitting on something</em>.</p>
+          <div class="eg">Static embedding of "cat" + context of all other tokens → <strong>rich contextual vector E3'</strong></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 6 -->
+  <div class="section" id="s6">
+    <div class="section-header">
+      <div class="section-num g6">6</div>
+      <div><div class="section-title">Self-Attention: Query, Key, Value</div><div class="section-desc">The core mechanism of transformers</div></div>
+    </div>
+
+    <div class="def-card">
+      <h3>Self-Attention</h3>
+      <p>When other tokens "pay attention" to one specific token to understand its meaning in context, it's called <strong>self-attention</strong>.</p>
+      <div class="highlight">For "The white cat sat on the ___": to predict the next word, each token must understand every other token. This is done through Q, K, V.</div>
+    </div>
+
+    <div class="qkv-grid">
+      <div class="qkv-card q">
+        <div class="qkv-letter">Q</div>
+        <h5>Query</h5>
+        <p>The token we want to find context for. If we want the contextual embedding for "cat", then <strong>"cat" is the Query</strong>.</p>
+        <div style="margin-top:10px;font-size:12px;color:var(--accent4);">Formula: W(Q) × E_cat = Q3 (query vector)</div>
+      </div>
+      <div class="qkv-card k">
+        <div class="qkv-letter">K</div>
+        <h5>Key</h5>
+        <p>All other tokens that are adding context to the query. In "The white cat sat on the", <strong>The, white, sat, on, the are Keys</strong>.</p>
+        <div style="margin-top:10px;font-size:12px;color:var(--accent);">Formula: W(K) × E_white = K3 (key vector)</div>
+      </div>
+      <div class="qkv-card v">
+        <div class="qkv-letter">V</div>
+        <h5>Value</h5>
+        <p>The actual content contribution from each key token, weighted by relevance. Used to compute the final context update.</p>
+        <div style="margin-top:10px;font-size:12px;color:var(--accent3);">Formula: W(V) × E_cat = V3 (value vector)</div>
+      </div>
+    </div>
+
+    <div class="attn-visual" style="margin-top:16px">
+      <h4>Interactive: Click a token to see attention weights</h4>
+      <div class="attn-tokens" id="attn-tokens">
+        <div class="attn-tok" data-idx="0" onclick="showAttn(0)">The</div>
+        <div class="attn-tok" data-idx="1" onclick="showAttn(1)">white</div>
+        <div class="attn-tok active" data-idx="2" onclick="showAttn(2)">cat</div>
+        <div class="attn-tok" data-idx="3" onclick="showAttn(3)">sat</div>
+        <div class="attn-tok" data-idx="4" onclick="showAttn(4)">on</div>
+        <div class="attn-tok" data-idx="5" onclick="showAttn(5)">the</div>
+      </div>
+      <div class="attn-hint" id="attn-hint">Showing attention from <strong>"cat"</strong> to all other tokens</div>
+      <div class="weight-bars" id="weight-bars">
+        <div class="w-bar-wrap"><div class="w-bar" style="height:30px;background:rgba(88,166,255,0.4)"></div><div class="w-bar-label">The</div></div>
+        <div class="w-bar-wrap"><div class="w-bar" style="height:54px;background:rgba(88,166,255,0.7)"></div><div class="w-bar-label">white</div></div>
+        <div class="w-bar-wrap"><div class="w-bar" style="height:60px;background:var(--accent4)"></div><div class="w-bar-label">cat ←</div></div>
+        <div class="w-bar-wrap"><div class="w-bar" style="height:42px;background:rgba(88,166,255,0.5)"></div><div class="w-bar-label">sat</div></div>
+        <div class="w-bar-wrap"><div class="w-bar" style="height:24px;background:rgba(88,166,255,0.3)"></div><div class="w-bar-label">on</div></div>
+        <div class="w-bar-wrap"><div class="w-bar" style="height:18px;background:rgba(88,166,255,0.2)"></div><div class="w-bar-label">the</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 7 -->
+  <div class="section" id="s7">
+    <div class="section-header">
+      <div class="section-num">7</div>
+      <div><div class="section-title">Relevancy Score, Softmax & Masking</div><div class="section-desc">How attention weights are calculated and applied</div></div>
+    </div>
+
+    <div class="grid2">
+      <div class="def-card" style="margin:0">
+        <h3>Relevancy Score</h3>
+        <p>Computed as the <strong>dot product of Q · K</strong>. Gives a raw score for how relevant each key is to the query.</p>
+        <div class="formula" style="margin-top:10px;font-size:13px;">score = Q · K<br><span style="font-size:11px;color:var(--muted);">(cat_query · each_key_vector)</span></div>
+      </div>
+      <div class="def-card" style="margin:0">
+        <h3>Softmax</h3>
+        <p>Converts raw dot product scores (any real number) into <strong>probabilities that sum to 1</strong>. Closer to 1 = more relevant.</p>
+        <div class="formula" style="margin-top:10px;font-size:13px;">softmax(scores) → [0.1, 0.6, 0.2, 0.05, 0.05]<br><span style="font-size:11px;color:var(--muted);">= attention weights (sum to 1)</span></div>
+      </div>
+    </div>
+
+    <div class="def-card" style="margin-top:16px; border-left:3px solid var(--accent2); border-radius:0 12px 12px 0">
+      <h3 style="color:var(--accent2)">Masking (Before Softmax) — The Key Decoder-Only Feature</h3>
+      <p>In Decoder-Only transformers (GPT), we <strong>mask future tokens</strong> so "cat" can only attend to <em>previous</em> tokens, not future ones. This is what differentiates Decoder-Only from Encoder-Only.</p>
+      <div class="highlight" style="border-left-color:var(--accent2);">
+        <strong>Why?</strong> During training, the model must learn to predict the next token without "cheating" by looking ahead. At inference, future tokens simply don't exist yet.
+        <br><br>
+        Encoder-only (BERT) → bidirectional, can see all tokens at once ✅<br>
+        Decoder-only (GPT) → unidirectional, sees only past tokens via masking 🔒
+      </div>
+    </div>
+
+    <div class="def-card" style="margin-top:16px;">
+      <h3>Delta Context (ΔE) — The Final Contextual Embedding</h3>
+      <p>After masking + softmax, we multiply each <strong>Value vector</strong> by its attention weight and sum them up. This "delta" gets <strong>added to the static embedding</strong>:</p>
+      <div class="formula">ΔE3 = V1×0.1 + V2×0.6 + V3×0.2 + ...<br>= 10% The + 60% white + 20% cat + ...<br><br>E3' = E3 (static) + ΔE3 (context)</div>
+      <div class="highlight">E3' is the final <strong>contextual embedding</strong> for "cat" — it now contains information about the white cat sitting on something.</div>
+    </div>
+  </div>
+
+  <!-- SECTION 8 -->
+  <div class="section" id="s8">
+    <div class="section-header">
+      <div class="section-num g3">8</div>
+      <div><div class="section-title">LM Head & Token Prediction</div><div class="section-desc">Converting contextual embeddings to output probabilities</div></div>
+    </div>
+
+    <div class="def-card">
+      <h3>LM Head</h3>
+      <p>Takes only the <strong>last token's embedding</strong> (which has the full context of everything before it) and converts it to a probability distribution over the entire vocabulary.</p>
+    </div>
+
+    <div style="background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:20px; margin-bottom:16px;">
+      <div style="display:flex;flex-direction:column;align-items:center;gap:0;">
+        <div style="background:rgba(86,211,100,0.1);border:1px solid rgba(86,211,100,0.4);border-radius:10px;padding:10px 40px;font-size:13px;font-weight:600;color:var(--accent3);margin-bottom:0;">Output Probabilities<br><span style="font-size:11px;font-weight:400;color:var(--muted);">mat: 32%, floor: 18%, roof: 12%...</span></div>
+        <div style="color:var(--muted);font-size:20px;margin:4px 0;">↑</div>
+        <div style="background:rgba(86,211,100,0.07);border:1px solid rgba(86,211,100,0.3);border-radius:10px;padding:8px 40px;font-size:13px;color:var(--accent3);">Softmax</div>
+        <div style="color:var(--muted);font-size:20px;margin:4px 0;">↑</div>
+        <div style="background:rgba(86,211,100,0.07);border:1px solid rgba(86,211,100,0.3);border-radius:10px;padding:8px 40px;font-size:13px;color:var(--accent3);">Linear Layer</div>
+        <div style="color:var(--muted);font-size:18px;margin:4px 0;font-family:monospace;">} LM Head</div>
+        <div style="color:var(--muted);font-size:20px;margin:4px 0;">↑</div>
+        <div style="background:rgba(227,179,65,0.08);border:1px solid rgba(227,179,65,0.3);border-radius:10px;padding:8px 40px;font-size:13px;color:var(--accent4);">Feed Forward Network</div>
+        <div style="color:var(--muted);font-size:20px;margin:4px 0;">↑</div>
+        <div style="background:rgba(88,166,255,0.08);border:1px solid rgba(88,166,255,0.3);border-radius:10px;padding:8px 40px;font-size:13px;color:var(--accent);">Masked Multi-head Attention</div>
+        <div style="color:var(--muted);font-size:20px;margin:4px 0;">↑</div>
+        <div style="background:rgba(188,140,255,0.08);border:1px solid rgba(188,140,255,0.3);border-radius:10px;padding:8px 40px;font-size:13px;color:var(--purple);">Positional Encoding</div>
+        <div style="color:var(--muted);font-size:20px;margin:4px 0;">↑</div>
+        <div style="background:rgba(188,140,255,0.08);border:1px solid rgba(188,140,255,0.3);border-radius:10px;padding:8px 40px;font-size:13px;color:var(--purple);">Input Embedding (Static)</div>
+        <div style="color:var(--muted);font-size:20px;margin:4px 0;">↑</div>
+        <div style="background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:8px 40px;font-size:13px;color:var(--text);">Input: "The white cat sat on the"</div>
+      </div>
+    </div>
+    <div class="def-card">
+      <h3>Why the last token?</h3>
+      <p>The last token has attended to ALL previous tokens through masked self-attention. It has the <strong>richest, fullest context</strong> of the entire sequence — making it the perfect representation for predicting what comes next.</p>
+    </div>
+  </div>
+
+  <!-- SECTION 9 -->
+  <div class="section" id="s9">
+    <div class="section-header">
+      <div class="section-num g2">9</div>
+      <div><div class="section-title">Encoder-Only vs Decoder-Only vs Encoder-Decoder</div><div class="section-desc">Choosing the right architecture for the task</div></div>
+    </div>
+
+    <div class="enc-dec">
+      <div class="enc-card enc">
+        <h4>Encoder-Only (BERT)</h4>
+        <ul>
+          <li>Bidirectional context — sees all tokens simultaneously</li>
+          <li>Goal: <strong>Understand</strong> input deeply, no generation</li>
+          <li>No masking of future tokens</li>
+          <li>Best for: text classification, sentiment analysis, named entity recognition</li>
+          <li>Architecture: same as Decoder-Only but <em>without</em> output generation</li>
+        </ul>
+        <div style="margin-top:12px;font-size:12px;background:rgba(88,166,255,0.08);border-radius:8px;padding:8px 10px;color:var(--muted);">
+          <strong style="color:var(--accent)">BERT</strong> = Bi-Directional Encoder Representations from Transformers
+        </div>
+      </div>
+      <div class="enc-card dec">
+        <h4>Decoder-Only (GPT)</h4>
+        <ul>
+          <li>Unidirectional — only sees previous tokens (masked)</li>
+          <li>Goal: <strong>Generate</strong> text token by token</li>
+          <li>Masking ensures no future token leakage</li>
+          <li>Best for: text generation, chatbots, code generation</li>
+          <li>Is a Transformer → GPT Model → Decoder Only</li>
+        </ul>
+        <div style="margin-top:12px;font-size:12px;background:rgba(188,140,255,0.08);border-radius:8px;padding:8px 10px;color:var(--muted);">
+          <strong style="color:var(--purple)">GPT</strong> = Generative Pre-Trained Transformer
+        </div>
+      </div>
+    </div>
+
+    <div class="def-card" style="margin-top:16px; border-left:3px solid var(--accent4); border-radius:0 12px 12px 0;">
+      <h3 style="color:var(--accent4)">Encoder-Decoder (T5)</h3>
+      <p>Uses <strong>both</strong>: Encoder creates richer embeddings of the input. Decoder then takes that + its own previous tokens to generate output.</p>
+      <div style="display:flex;gap:16px;margin-top:14px;flex-wrap:wrap;">
+        <div style="flex:1;min-width:200px;background:var(--surface2);border-radius:8px;padding:12px;">
+          <div style="font-size:12px;font-weight:600;color:var(--accent);margin-bottom:6px;">Encoder (Step 1)</div>
+          <div style="font-size:12px;color:var(--muted);">Richer Embeddings of entire input sentence using bidirectional attention</div>
+        </div>
+        <div style="flex:1;min-width:200px;background:var(--surface2);border-radius:8px;padding:12px;">
+          <div style="font-size:12px;font-weight:600;color:var(--purple);margin-bottom:6px;">Decoder (Step 2)</div>
+          <div style="font-size:12px;color:var(--muted);">Takes encoder output via <strong>Cross-Attention</strong> → Feed Forward → LM Head → generates output</div>
+        </div>
+      </div>
+      <div class="highlight" style="border-left-color:var(--accent4);">
+        <strong>Use case:</strong> Translation — "The white cat sat on the mat" → "Le chat blanc était assis sur le tapis" (T5 model)
+      </div>
+    </div>
+  </div>
+
+  <!-- Cheat Sheet -->
+  <div class="cheatsheet">
+    <h3>Quick Reference Cheat Sheet</h3>
+    <div class="cs-row"><span class="cs-term">NLP</span><span class="cs-def">Field building tech to understand, interpret & generate human language</span></div>
+    <div class="cs-row"><span class="cs-term">Language Model (LM)</span><span class="cs-def">Any model that predicts P(next_token | previous_tokens)</span></div>
+    <div class="cs-row"><span class="cs-term">LLM</span><span class="cs-def">Transformer-based LM trained at massive scale</span></div>
+    <div class="cs-row"><span class="cs-term">Tokenization</span><span class="cs-def">Breaking text into tokens, then assigning integer IDs</span></div>
+    <div class="cs-row"><span class="cs-term">Static Embedding</span><span class="cs-def">Fixed vector per token, same regardless of context (Word2Vec)</span></div>
+    <div class="cs-row"><span class="cs-term">Contextual Embedding</span><span class="cs-def">Vector that changes based on surrounding tokens (Transformers)</span></div>
+    <div class="cs-row"><span class="cs-term">Positional Encoding</span><span class="cs-def">Encodes the position of each token in the sequence</span></div>
+    <div class="cs-row"><span class="cs-term">Self-Attention</span><span class="cs-def">Mechanism for tokens to attend to each other; uses Q, K, V</span></div>
+    <div class="cs-row"><span class="cs-term">Query (Q)</span><span class="cs-def">Token we want context for; W(Q) × E_token = query vector</span></div>
+    <div class="cs-row"><span class="cs-term">Key (K)</span><span class="cs-def">All other tokens adding context; W(K) × E_token = key vector</span></div>
+    <div class="cs-row"><span class="cs-term">Value (V)</span><span class="cs-def">Content contribution from each token; W(V) × E = value vector</span></div>
+    <div class="cs-row"><span class="cs-term">Relevancy Score</span><span class="cs-def">Dot product Q · K — how relevant each key is to the query</span></div>
+    <div class="cs-row"><span class="cs-term">Softmax</span><span class="cs-def">Converts raw scores into probabilities summing to 1</span></div>
+    <div class="cs-row"><span class="cs-term">Masking</span><span class="cs-def">Blocks future tokens in Decoder-Only models (key GPT feature)</span></div>
+    <div class="cs-row"><span class="cs-term">ΔE (Delta Context)</span><span class="cs-def">Weighted sum of Value vectors; added to static embedding → E'</span></div>
+    <div class="cs-row"><span class="cs-term">LM Head</span><span class="cs-def">Linear + Softmax on last token's embedding → token probabilities</span></div>
+    <div class="cs-row"><span class="cs-term">BERT</span><span class="cs-def">Encoder-Only, bidirectional, for understanding (classification, NER)</span></div>
+    <div class="cs-row"><span class="cs-term">GPT</span><span class="cs-def">Decoder-Only, unidirectional, for generation (chat, code)</span></div>
+    <div class="cs-row"><span class="cs-term">T5</span><span class="cs-def">Encoder-Decoder, for translation & text-to-text tasks</span></div>
+  </div>
+
+  <div class="footer">
+    <p style="color:var(--muted)">These notes cover: NLP fundamentals → LM evolution → Tokenization → Embeddings → Transformer architecture → Self-Attention (Q/K/V) → Masking → LM Head → Model types</p>
+    <div class="hashtags">
+      <span class="tag blue">#LLM</span>
+      <span class="tag purple">#Transformers</span>
+      <span class="tag green">#NLP</span>
+      <span class="tag yellow">#MachineLearning</span>
+      <span class="tag orange">#DeepLearning</span>
+      <span class="tag blue">#AI</span>
+      <span class="tag purple">#BERT</span>
+      <span class="tag green">#GPT</span>
+    </div>
+  </div>
+</div>
+
+<script>
+const attnData = {
+  0: { name: 'The', weights: [60, 30, 20, 25, 15, 50], colors: ['var(--accent4)', 'var(--accent)', 'var(--accent)', 'var(--accent)', 'var(--accent)', 'var(--accent)'] },
+  1: { name: 'white', weights: [35, 60, 55, 20, 15, 25], colors: ['var(--accent)', 'var(--accent4)', 'var(--accent)', 'var(--accent)', 'var(--accent)', 'var(--accent)'] },
+  2: { name: 'cat', weights: [30, 54, 60, 42, 24, 18], colors: ['var(--accent)', 'var(--accent)', 'var(--accent4)', 'var(--accent)', 'var(--accent)', 'var(--accent)'] },
+  3: { name: 'sat', weights: [28, 45, 55, 60, 35, 20], colors: ['var(--accent)', 'var(--accent)', 'var(--accent)', 'var(--accent4)', 'var(--accent)', 'var(--accent)'] },
+  4: { name: 'on', weights: [20, 30, 52, 48, 60, 40], colors: ['var(--accent)', 'var(--accent)', 'var(--accent)', 'var(--accent)', 'var(--accent4)', 'var(--accent)'] },
+  5: { name: 'the', weights: [55, 20, 25, 30, 35, 60], colors: ['var(--accent)', 'var(--accent)', 'var(--accent)', 'var(--accent)', 'var(--accent)', 'var(--accent4)'] },
+};
+const words = ['The','white','cat','sat','on','the'];
+
+function showAttn(idx) {
+  const d = attnData[idx];
+  document.querySelectorAll('.attn-tok').forEach((t,i) => {
+    t.className = 'attn-tok';
+    if(i === idx) t.classList.add('active');
+    else if(d.weights[i] > 45) t.classList.add('high');
+    else if(d.weights[i] > 28) t.classList.add('med');
+    else t.classList.add('low');
+  });
+  document.getElementById('attn-hint').innerHTML = `Showing attention from <strong>"${d.name}"</strong> to all other tokens`;
+  const bars = document.getElementById('weight-bars');
+  bars.innerHTML = '';
+  d.weights.forEach((w,i) => {
+    const wrap = document.createElement('div'); wrap.className = 'w-bar-wrap';
+    const bar = document.createElement('div'); bar.className = 'w-bar';
+    bar.style.height = w + 'px';
+    bar.style.background = i === idx ? 'var(--accent4)' : d.colors[i];
+    bar.style.opacity = i === idx ? '1' : (w/60 * 0.8 + 0.2);
+    const label = document.createElement('div'); label.className = 'w-bar-label';
+    label.textContent = words[i] + (i === idx ? ' ←' : '');
+    wrap.appendChild(bar); wrap.appendChild(label); bars.appendChild(wrap);
+  });
+}
+</script>
