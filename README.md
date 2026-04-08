@@ -24,7 +24,7 @@ architecture and NLP fundamentals.
 | File | Description |
 |------|-------------|
 | `index.html` | Interactive web study guide (GitHub Pages) |
-| `LLMs_Study_Guide.pptx` | Presentation slides |
+| `LLMs_Study_Guide.pdf` | Presentation slides |
 
 ## Tech
 
